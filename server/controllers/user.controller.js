@@ -2,6 +2,7 @@
  import bcrypt from 'bcryptjs'
  import jwt from 'jsonwebtoken'
 
+
  const register  = async(req, res)=>{
     const UserData = req.body;
     UserData.password = await bcrypt.hash(UserData.password, 10)
@@ -41,12 +42,14 @@ const login = async (req, res) => {
   };
 
  const getProfile  =async (req, res)=>{
-    const {token } = req.cookies;
+    //const {token } = req.cookies;
     //console.log(token);
     try {
-        const tokenDetails = jwt.verify(token, process.env.JWT_PASSWORD);
+        //const tokenDetails = jwt.verify(token, process.env.JWT_PASSWORD);
         //console.log('Token Details:', tokenDetails);
-        const userDetails = await User.findById(tokenDetails.id);
+       // const userDetails = await User.findById(tokenDetails.id);
+        const userId = req.user.id;
+        const userDetails = await User.findById(userId);
         res.status(200).send(userDetails);
       } catch (error) {
         console.log('Token Verification Error:', error.message);
