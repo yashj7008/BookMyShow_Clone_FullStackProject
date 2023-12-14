@@ -1,5 +1,6 @@
 import express from 'express'
 import userRoutes from './routes/user.routes.js'
+import movieRoutes from './routes/movie.routes.js'
 import { config } from 'dotenv';
 import cookieParser from 'cookie-parser';
 import connectToDatabase from './config/dbConfig.js';
@@ -11,11 +12,11 @@ app.use(express.json());
 
 app.use(cookieParser());
 
-
+app.use('/api/movie',movieRoutes)
 app.use('/api/user', userRoutes);
 
 app.all('*', (req, res)=>{
-    res.status(404).send("Page not found !");
+    res.status(404).send("Page not found !!!!");
 })
 
 
