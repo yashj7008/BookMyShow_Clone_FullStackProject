@@ -7,9 +7,15 @@ const Show = () => {
     const { showId } = useParams();
     
     const getShowDetail = async() =>{
+      try {
         const response = await fetch(`http://localhost:5050/api/show/${showId}`);
         const data  = await response.json()
         setShowDetail(data);
+        
+      } catch (error) {
+        console.log(error);
+      }
+        
     }
     useEffect(()=>{
         getShowDetail();

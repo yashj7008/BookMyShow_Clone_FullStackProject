@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from './AuthProvider'
 
 
 export default function SignIn() {
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const auth = useAuth();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -29,6 +32,9 @@ export default function SignIn() {
       }
 
       // Authentication successful, navigate to /movies
+      const userData = await response.json();
+      auth.login(userData);
+      
       navigate("/movies");
     } catch (error) {
       console.error("Login error:", error);

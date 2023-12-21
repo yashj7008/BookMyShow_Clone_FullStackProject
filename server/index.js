@@ -9,13 +9,13 @@ config();
 import cors from 'cors'
 
 const app = express();
-app.use(cors())
+app.use(cors());
 
 app.use(express.json());
 
 app.use(cookieParser());
 
-app.use('/api/movie',movieRoutes)
+app.use('/api/movie',movieRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/show', showRoutes);
 

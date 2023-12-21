@@ -11,6 +11,7 @@ import DashboardLayout from './layouts/DashboardLayout'
 import  './App.css';
 import TheatreList from "./components/TheatreList";
 import Show from './components/Show'
+import UserProfile from "./components/UserProfile";
 
 const router = createBrowserRouter([
     {
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
     {
       path : '/register',
       element : <Register/>
+    },
+    {
+      path : '/user-profile',
+      element : <UserProfile/>
     },
     {
       path : '/movies',
