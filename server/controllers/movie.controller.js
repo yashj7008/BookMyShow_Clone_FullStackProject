@@ -1,28 +1,56 @@
-import Movie from '../model/movie.model.js'
+import Movie from '../model/movie.model.js' 
+import Theatre from '../model/threatre.model.js' 
 import  jwt  from 'jsonwebtoken'
 
 
 const createMovie = async (req, res)=>{
    
+    const movieData = req.body;
+    try {
 
-    try{
-     const movieData = req.body;
-     const data = await Movie.create(movieData);
-     res.status(200).send(data);
+        console.log('theatre1 > ', movieData.theatre);
+        let theatre = await Theatre.findOne({name: movieData.theatre?.name});
+       // console.log('theatre2 > ', theatre);
+        if(!theatre) {
+            theatre = await Theatre.create(movieData.theatre);
+        }
+       // console.log('theatre3 > ', theatre);
 
+        const data = await Movie.create({ ...movieData, theatre: theatre._id });
+        res.status(200).send(data);
+    } catch(e) {
+        res.status(500).send(e);
     }
-    catch(error){
-        res.status(500).send(error);
-    }
-    
 }
 
 const getMovies = async (req, res)=>{
+    const type = req.query.type; // ALL, UPCOMING, LIVE
+    const title = req.query.title;
+    let queryFilter = {};
+    if (title) {
+        queryFilter.title = new RegExp(title, 'g');
+    }
+    switch(type) {
+        case 'ALL': {
+            break;
+        }
+        case 'UPCOMING': {
+            queryFilter.releaseDate = { $gt: new Date() } ; //UPCOMING
+            break;
+        }
+        case  'LIVE': {
+            queryFilter.releaseDate = { $lte: new Date() } ; //LIVE
+            break;
+        }
+        default:
+            break;
+    }
+   
     try {
-        const movieData = await Movie.find();
-        res.status(200).send(movieData);
-    } catch (error) {
-        res.status(500).send(error)
+        const data = await Movie.find(queryFilter).populate('theatre');
+        res.status(200).send(data);
+    } catch(e) {
+        res.status(500).send(e);
     }
    
 }

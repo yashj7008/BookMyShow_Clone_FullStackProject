@@ -39,17 +39,22 @@ const MovieSchema = new Schema({
      genre : {
         type : String,
         required : true,
-        enum : ['Drama','Triller','Horror','Fiction','Biography',"Comedy"],
+        enum : ['Drama','Triller','Horror','Fiction','Biography',"Comedy", "Action"],
      },
      releaseDate :{
-        type : String ,
+        type : Date ,
         required : true,
      } ,
      languages : [{
         type : String,
         required : true,
         enum : ['English','Hindi','Telgu','Marathi'],
-     }]
+     }],
+     theatre: {
+        type: Schema.Types.ObjectId,
+        ref: 'theatre',
+        required: true
+    }
 
 
 
