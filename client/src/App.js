@@ -13,6 +13,8 @@ import TheatreList from "./components/TheatreList";
 import Show from './components/Show'
 import UserProfile from "./components/UserProfile";
 
+
+
 const router = createBrowserRouter([
     {
       path : '/',

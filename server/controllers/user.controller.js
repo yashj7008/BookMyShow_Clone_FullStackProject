@@ -4,10 +4,17 @@
 
 
  const register  = async(req, res)=>{
+  try {
     const UserData = req.body;
     UserData.password = await bcrypt.hash(UserData.password, 10)
     const data = await User.create(UserData);
     res.status(200).send({status : true, message : "Successfully registered !"});
+    
+  } catch (error) {
+    res.status(500).send({status : false, message : "Internal Server Error"});
+    
+  }
+   
 
 }
 

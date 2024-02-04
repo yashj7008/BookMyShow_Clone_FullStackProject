@@ -1,12 +1,20 @@
 import { Link } from "react-router-dom";
 import { useAuth } from '../components/AuthProvider';
+import {MovieList} from "../components/MovieList"
 
-import { useState } from "react";
 
+import { createContext ,useState} from "react";
+
+export const queryContext = createContext(null);
 
 const DashboardLayout = ({ children, title }) => {
     const auth = useAuth();
     const [showUserProfile, setShowUserProfile] = useState(false);
+
+    //Making search parameter here
+    const [query, setQuery] = useState("");
+   
+    
 
     const toggleUserProfile = () => {
       setShowUserProfile(!showUserProfile);
@@ -23,7 +31,6 @@ const DashboardLayout = ({ children, title }) => {
                     <div className="hidden md:block">
                         <div className="ml-10 flex items-baseline space-x-4">
                         <Link to="/movies" className="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium" aria-current="page">Movies</Link>
-                        <Link to="/theatres" className="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium" aria-current="page">Theatres</Link>
                         </div>
                     </div>
                     </div>
@@ -31,14 +38,10 @@ const DashboardLayout = ({ children, title }) => {
                         <input
                             type="text"
                             placeholder="Search for Movies"
-                            class="px-3 py-2 w-64 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+                            value={query}
+                            onChange={(e)=>{setQuery(e.target.value)}}
+                            className="px-3 py-2 w-64 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
                         />
-                        <button
-                            type="button"
-                            class="ml-2 px-3 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
-                        >
-                            Search
-                        </button>
                     </div>
                     <div className="hidden md:block">
                     <div className="ml-4 flex items-center md:ml-6">
@@ -75,9 +78,6 @@ const DashboardLayout = ({ children, title }) => {
                             </Link>
                             
                         </div>
-    
-                        
-
                             <div className="hidden absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
                                 <a href="#" className="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-0">Your Profile</a>
                                 <a href="#" className="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-1">Settings</a>
@@ -142,7 +142,10 @@ const DashboardLayout = ({ children, title }) => {
             </header>
             <main className="flex-grow">
                 <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
-                    {children}
+                <queryContext.Provider value={{ query, setQuery }}>
+                  {children}
+                </queryContext.Provider>
+                    
                 </div>
             </main>
             <footer class="bg-gray-800 text-white p-4">

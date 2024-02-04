@@ -26,9 +26,13 @@ const createMovie = async (req, res)=>{
 const getMovies = async (req, res)=>{
     const type = req.query.type; // ALL, UPCOMING, LIVE
     const title = req.query.title;
+    function escapeRegExp(string) {
+        return string.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&'); // Escaping special characters
+      }
     let queryFilter = {};
     if (title) {
-        queryFilter.title = new RegExp(title, 'g');
+        const escapedTitle = escapeRegExp(title);
+        queryFilter.title = new RegExp(escapedTitle, 'g');
     }
     switch(type) {
         case 'ALL': {
@@ -48,6 +52,7 @@ const getMovies = async (req, res)=>{
    
     try {
         const data = await Movie.find(queryFilter).populate('theatre');
+       // console.log(queryFilter);
         res.status(200).send(data);
     } catch(e) {
         res.status(500).send(e);
