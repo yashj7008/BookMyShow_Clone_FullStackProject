@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import { useAuth } from '../components/AuthProvider';
-import {MovieList} from "../components/MovieList"
+import { useAuth } from '../features/AuthProvider';
+import {MovieList} from "../features/MovieList"
 
 
 import { createContext ,useState} from "react";

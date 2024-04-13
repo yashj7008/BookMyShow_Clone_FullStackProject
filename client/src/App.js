@@ -4,45 +4,44 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
-import SignIn from './components/SignIn';
-import Register from './components/Register';
-import MovieList from './components/MovieList';
-import DashboardLayout from './layouts/DashboardLayout'
 import  './App.css';
-import TheatreList from "./components/TheatreList";
-import Show from './components/Show'
-import UserProfile from "./components/UserProfile";
+import UserProfilePage from "./components/UserProfile";
+import HomePage from "./pages/HomePage";
+import SignInPage from "./pages/SignInPage";
+import SignUpPage from "./pages/SignUpPage";
+import MovieDetail from "./pages/MovieDetailPage";
+import ShowPage from "./pages/ShowPage";
 
 
 
 const router = createBrowserRouter([
     {
       path : '/',
-      element : <DashboardLayout title={"Home Page "}>Dashboard !</DashboardLayout>
+      element : <HomePage/>
     },
     {
       path : '/sign-in',
-      element : <SignIn/>
+      element : <SignInPage/>
     },
     {
-      path : '/register',
-      element : <Register/>
+      path : '/sign-up',
+      element : <SignUpPage/>
     },
     {
       path : '/user-profile',
-      element : <UserProfile/>
+      element : <UserProfilePage/>
     },
     {
       path : '/movies',
-      element : <DashboardLayout title={"Movies"}><MovieList/></DashboardLayout>
+      element : <HomePage/>
     },
     {
       path : '/movies/:movieId',
-      element : <DashboardLayout title={"Theatres"}><TheatreList/></DashboardLayout>
+      element : <MovieDetail/>
     },
     {
       path : '/show/:showId',
-      element : <DashboardLayout title={"Shows"}><Show/></DashboardLayout>
+      element : <ShowPage/>
     }
 
   ])
