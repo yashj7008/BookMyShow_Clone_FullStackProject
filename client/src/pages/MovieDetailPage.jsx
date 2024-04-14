@@ -1,13 +1,13 @@
 import React from 'react'
 import DashboardLayout from '../layouts/DashboardLayout'
-import TheatreList from '../features/theatres/TheatreList'
+import MovieDetail   from '../features/movieList/MovieDetail'
 
-const MovieDetail = () => {
+const MovieDetailPage = () => {
   return (
     <>
-       <DashboardLayout title={"Theatres"}><TheatreList/></DashboardLayout>
+       <DashboardLayout title={"Theatres"}><MovieDetail/></DashboardLayout>
     </>
   )
 }
 
-export default MovieDetail
+export default MovieDetailPage

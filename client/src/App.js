@@ -5,12 +5,13 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import  './App.css';
-import UserProfilePage from "./components/UserProfile";
 import HomePage from "./pages/HomePage";
 import SignInPage from "./pages/SignInPage";
 import SignUpPage from "./pages/SignUpPage";
-import MovieDetail from "./pages/MovieDetailPage";
+import MovieDetailPage from "./pages/MovieDetailPage";
 import ShowPage from "./pages/ShowPage";
+import UserProfilePage from './pages/UserProfilePage'
+import TheatrePage from "./pages/TheatrePage";
 
 
 
@@ -37,12 +38,13 @@ const router = createBrowserRouter([
     },
     {
       path : '/movies/:movieId',
-      element : <MovieDetail/>
+      element : <MovieDetailPage/>
     },
     {
-      path : '/show/:showId',
-      element : <ShowPage/>
+      path : '/movies/theatres/:movieId',
+      element : <TheatrePage/>
     }
+
 
   ])
 
