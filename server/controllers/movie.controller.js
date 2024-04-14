@@ -26,13 +26,14 @@ const createMovie = async (req, res)=>{
 const getMovies = async (req, res)=>{
     const type = req.query.type; // ALL, UPCOMING, LIVE
     const title = req.query.title;
+    //console.log(title);
     function escapeRegExp(string) {
         return string.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&'); // Escaping special characters
       }
     let queryFilter = {};
     if (title) {
         const escapedTitle = escapeRegExp(title);
-        queryFilter.title = new RegExp(escapedTitle, 'g');
+        queryFilter.title = new RegExp(escapedTitle, 'gi');
     }
     switch(type) {
         case 'ALL': {
@@ -52,7 +53,8 @@ const getMovies = async (req, res)=>{
    
     try {
         const data = await Movie.find(queryFilter).populate('theatre');
-       // console.log(queryFilter);
+        // console.log(queryFilter);
+        // console.log(data);
         res.status(200).send(data);
     } catch(e) {
         res.status(500).send(e);
@@ -60,4 +62,22 @@ const getMovies = async (req, res)=>{
    
 }
 
-export {createMovie,getMovies }
+const getSingleMovie= async (req, res)=>{
+    try {
+        const id = req.params.movieId; // Correctly access the movie ID from req.params
+        console.log(id);
+        const movie = await Movie.findById({_id : id}); // or dirrect send 
+        if (!movie) {
+            // If movie with the given ID is not found, respond with 404 Not Found
+            return res.status(404).json({ error: "Movie not found" });
+        }
+        res.status(200).json(movie);
+    } catch (error) {
+        // If an error occurs during database operation, respond with 500 Internal Server Error
+        res.status(500).send(error);
+    }
+}
+
+
+
+export {createMovie,getMovies ,getSingleMovie }
