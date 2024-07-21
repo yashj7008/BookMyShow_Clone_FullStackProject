@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { queryContext } from "../../layouts/DashboardLayout";
@@ -9,15 +9,14 @@ import {
   selectAllMovie,
 } from "../movieList/movieListSlice";
 import { useSelector, useDispatch } from "react-redux";
+import MyModal from "../modal/modal";
 
 export default function AdminMovieList() {
   const movies = useSelector(selectAllMovie);
-  console.log("I am movies", movies);
-
   const dispatch = useDispatch();
   const isLoading = useSelector((state) => state.movieList.status);
   const { query, type } = useContext(queryContext);
-  console.log("type in movie list", type);
+  const [openForm, setOpenForm] = useState(false);
 
   const handleEdit = () => {};
 
@@ -30,7 +29,8 @@ export default function AdminMovieList() {
   ) : (
     <div>
       <div className="flex justify-end my-6">
-        <button className="bg-blue-500 px-8 py-2 rounded">Add Movie</button>
+        <button className="bg-blue-500 px-8 py-2 rounded" onClick={() => setOpenForm(true)}>Add Movie</button>
+        <MyModal open={openForm} close={ () => setOpenForm(false)}><p>Hellow Modal</p> </MyModal>
       </div>
       <div className="movieWrapper">
       {movies.map((movie) => (
