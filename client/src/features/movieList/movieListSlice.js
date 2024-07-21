@@ -36,7 +36,7 @@ export const fetchMovieByIdAsync = createAsyncThunk(
 
 
 export const movieSlice = createSlice({
-    name : "movieList",
+    name : "movieListApna",
     initialState,
     reducers :{
         increment : (state) =>{

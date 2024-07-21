@@ -1,15 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from 'react-router-dom'
+import { Fragment } from 'react';
+import {  Menu, Transition } from '@headlessui/react';
+import classNames from 'classnames';
+import { selectLoggedInUser, checkAuthAsync } from "../auth/authSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const Nav = ({query, setQuery}) => {
-    const [showUserProfile, setShowUserProfile] = useState(false);
+    const userInfo = useSelector(selectLoggedInUser);
+    const dispatch = useDispatch();
 
     //Making search parameter here
-    
+    const userNavigation = [
+      { name: 'My Profile', link: '/user-profile' },
+      { name: 'My Orders', link: '/my-orders' },
+      { name: 'Sign out', link: '/logout' },
+    ];
   
-    const toggleUserProfile = () => {
-      setShowUserProfile(!showUserProfile);
-    };
+  useEffect(()=>{
+    dispatch(checkAuthAsync());
+  },[dispatch])
   return (
     <>
       <nav className="bg-white-800">
@@ -48,71 +58,63 @@ const Nav = ({query, setQuery}) => {
             </div>
             <div className="hidden md:block">
               <div className="ml-4 flex items-center md:ml-6">
-                <Link to="/sign-in">
+                 { !userInfo && (<Link to="/sign-in">
                   <button
                     type="button"
                     className="relative rounded bg-red-500 px-2 py-1 text-slate-200 focus:outline-none"
                   >
                     Sign in
                   </button>
-                </Link>
+                </Link>)}
+                { userInfo.role === "ADMIN" && (<Link to="/admin">
+                  <button
+                    type="button"
+                    className="relative rounded bg-red-500 px-2 py-1 text-slate-200 focus:outline-none"
+                  >
+                    ADMIN
+                  </button>
+                </Link>)}
 
                 <div className="relative ml-3">
-                  <div>
-                    <Link to="/user-profile">
-                      <button
-                        type="button"
-                        onClick={toggleUserProfile}
-                        className="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                        id="user-menu-button"
-                        aria-expanded="false"
-                        aria-haspopup="true"
-                      >
-                        <span className="absolute -inset-1.5"></span>
-                        <span className="sr-only">Open user menu</span>
-                        <img
-                          className="h-8 w-8 rounded-full"
-                          src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                          alt=""
-                        />
-                      </button>
-                    </Link>
-                  </div>
-                  <div
-                    className="hidden absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-                    role="menu"
-                    aria-orientation="vertical"
-                    aria-labelledby="user-menu-button"
-                    tabindex="-1"
-                  >
-                    <a
-                      href="#"
-                      className="block px-4 py-2 text-sm text-gray-700"
-                      role="menuitem"
-                      tabindex="-1"
-                      id="user-menu-item-0"
-                    >
-                      Your Profile
-                    </a>
-                    <a
-                      href="#"
-                      className="block px-4 py-2 text-sm text-gray-700"
-                      role="menuitem"
-                      tabindex="-1"
-                      id="user-menu-item-1"
-                    >
-                      Settings
-                    </a>
-                    <a
-                      href="#"
-                      className="block px-4 py-2 text-sm text-gray-700"
-                      role="menuitem"
-                      tabindex="-1"
-                      id="user-menu-item-2"
-                    >
-                      Sign out
-                    </a>
-                  </div>
+                <Menu as="div" className="relative ml-3">
+                        <div>
+                          <Menu.Button className="flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                            <span className="sr-only">Open user menu</span>
+                            <img
+                  className="h-10 w-10 rounded-full"
+                  src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                  alt=""
+                />
+                          </Menu.Button>
+                        </div>
+                        <Transition
+                          as={Fragment}
+                          enter="transition ease-out duration-100"
+                          enterFrom="transform opacity-0 scale-95"
+                          enterTo="transform opacity-100 scale-100"
+                          leave="transition ease-in duration-75"
+                          leaveFrom="transform opacity-100 scale-100"
+                          leaveTo="transform opacity-0 scale-95"
+                        >
+                          <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                            {userNavigation.map((item) => (
+                              <Menu.Item key={item.name}>
+                                {({ active }) => (
+                                  <Link
+                                    to={item.link}
+                                    className={classNames(
+                                      active ? 'bg-gray-100' : '',
+                                      'block px-4 py-2 text-sm text-gray-700'
+                                    )}
+                                  >
+                                    {item.name}
+                                  </Link>
+                                )}
+                              </Menu.Item>
+                            ))}
+                          </Menu.Items>
+                        </Transition>
+                      </Menu>
                 </div>
               </div>
             </div>

@@ -1,25 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { format } from 'date-fns';
+import { useSelector, useDispatch } from "react-redux"
+
+import { fetchAllTheatreAsync, selectAllTheatres } from './theatreSlice';
+
 
 const TheatreList = () => {
-  const [theatreList, setTheatreList] = useState([]);
+  const theatreList = useSelector(selectAllTheatres);
   const { movieId } = useParams();
   console.log(movieId);
-  const loadTheatreList = async () => {
-    try {
-      const response = await fetch(`http://localhost:5050/api/show/list?movie=${movieId}&date=2023-12-26`);
-      const data = await response.json();
-      setTheatreList(data);
-    } catch (error) {
-      console.error('Error loading theatre list:', error);
-    }
-  };
+  const dispatch = useDispatch();
+
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
-    loadTheatreList();
-  }, [movieId]); // Include movieId in the dependency array
+    dispatch(fetchAllTheatreAsync({movieId}));
+  }, [movieId,dispatch]); // Include movieId in the dependency array
 
   return (
     <>
@@ -37,12 +34,8 @@ const TheatreList = () => {
           <div className='w-2/3 flex gap-2'>
             {
               theatre.shows.map((show)=>(
-                <Link to={`/show/${show._id}`}>
-                      <button className='bg-transparent border-blue-500 text-blue-500 py-2 px-1 hover:bg-blue-500 hover:text-white'>
-                            {
-                              format(new Date(show.datetime) , ' h:mm a')
-                            }
-                      </button> 
+                <Link to={`/movies/theatres/show/${show._id}`}>
+                      <button className='bg-transparent border-blue-500 text-blue-500 py-2 px-1 hover:bg-blue-500 hover:text-white'>{show.time}</button> 
                 </Link>
                 
               ))

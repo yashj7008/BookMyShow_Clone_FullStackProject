@@ -12,13 +12,19 @@ import MovieDetailPage from "./pages/MovieDetailPage";
 import ShowPage from "./pages/ShowPage";
 import UserProfilePage from './pages/UserProfilePage'
 import TheatrePage from "./pages/TheatrePage";
-
+import Protected from "./features/auth/components/Protected";
+import AdminHome from "./pages/AdminHome";
+import ProtectedAdmin from "./features/auth/components/ProtectedAdmin";
 
 
 const router = createBrowserRouter([
     {
       path : '/',
-      element : <HomePage/>
+      element : <Protected><HomePage/></Protected>
+    },
+    {
+      path :'/admin',
+      element : <ProtectedAdmin><AdminHome/></ProtectedAdmin>
     },
     {
       path : '/sign-in',
@@ -34,7 +40,7 @@ const router = createBrowserRouter([
     },
     {
       path : '/movies',
-      element : <HomePage/>
+      element : (<Protected><HomePage/></Protected>)
     },
     {
       path : '/movies/:movieId',
@@ -42,7 +48,11 @@ const router = createBrowserRouter([
     },
     {
       path : '/movies/theatres/:movieId',
-      element : <TheatrePage/>
+      element : (<Protected><TheatrePage/></Protected>)
+    },
+    {
+      path : '/movies/theatres/show/:showId',
+      element : (<Protected><ShowPage/></Protected>)
     }
 
 
