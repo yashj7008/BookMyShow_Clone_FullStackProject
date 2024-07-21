@@ -9,7 +9,8 @@ import {
   selectAllMovie,
 } from "../movieList/movieListSlice";
 import { useSelector, useDispatch } from "react-redux";
-import MyModal from "../modal/modal";
+import Modal from "../modal/modal";
+import AddMovieForm from "../../forms/addMovie.form";
 
 export default function AdminMovieList() {
   const movies = useSelector(selectAllMovie);
@@ -30,7 +31,7 @@ export default function AdminMovieList() {
     <div>
       <div className="flex justify-end my-6">
         <button className="bg-blue-500 px-8 py-2 rounded" onClick={() => setOpenForm(true)}>Add Movie</button>
-        <MyModal open={openForm} close={ () => setOpenForm(false)}><p>Hellow Modal</p> </MyModal>
+       
       </div>
       <div className="movieWrapper">
       {movies.map((movie) => (
@@ -60,6 +61,7 @@ export default function AdminMovieList() {
               </p>
             </div>
           </div>
+          <Modal open={openForm} close={ () => setOpenForm(false)}><AddMovieForm/></Modal>
         </>
       ))}
     </div>
