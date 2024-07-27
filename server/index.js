@@ -9,8 +9,13 @@ config();
 import cors from 'cors'
 
 const app = express();
-app.use(cors());
-
+app.use(cors({
+    origin: '*',  // Allow only requests from this origin
+    //credentials: true,                // Include credentials in the CORS requests
+ // Specify which headers can be included in requests
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Explicitly allow these methods
+  }));
+  
 app.use(express.json());
 
 app.use(cookieParser());

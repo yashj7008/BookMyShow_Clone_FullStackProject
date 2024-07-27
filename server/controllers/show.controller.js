@@ -1,16 +1,16 @@
-import Show  from "../model/show.model.js"
 import mongoose from "mongoose";
+import Shows  from "../model/shows.model.js"
 
 export const  createShow = async (req, res) =>{
      const showDetails = req.body;
      //console.log(showDetails);
-     const response = await Show.create(showDetails);
+     const response = await Shows.create(showDetails);
 
      res.status(200).send(response);
 }
 
 export const  showDetail = async (req, res) =>{
-    const response = await Show.findById(req.params.showId);
+    const response = await Shows.findById(req.params.showId);
 
     res.status(200).send(response);
 }
@@ -20,13 +20,13 @@ export const listShows = async (req, res) => {
     const movieDate = req.query.date;
 
     try {
-        const response = await Show.aggregate([
+        const response = await Shows.aggregate([
             {
                 $match: { movie: new mongoose.Types.ObjectId(movieId) },
             },
             {
                 $match: {
-                    datetime: {
+                    date: {
                         $gte: new Date(`${movieDate}T00:00:00.000+00:00`),
                         $lt: new Date(`${movieDate}T23:59:59.999+00:00`),
                     },
@@ -59,3 +59,25 @@ export const listShows = async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 };
+
+export const getShowById = async (req, res)=>{
+    try {
+        const { showId } = req.params;
+        const show = await Shows.findById(showId)
+          .populate("movie")
+          .populate("theatre");
+
+        ressend({
+          success: true,
+          message: "Show fetched successfully",
+          data: show,
+        });
+      } catch (error) {
+        res.send({
+          success: false,
+          message: error.message,
+        });
+      }
+}
+
+

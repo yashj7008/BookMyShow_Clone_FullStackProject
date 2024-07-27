@@ -71,7 +71,8 @@ const getSingleMovie= async (req, res)=>{
             // If movie with the given ID is not found, respond with 404 Not Found
             return res.status(404).json({ error: "Movie not found" });
         }
-        res.status(200).json(movie);
+        res.cookie("temp", "Ok");
+        res.status(200).send(movie);
     } catch (error) {
         // If an error occurs during database operation, respond with 500 Internal Server Error
         res.status(500).send(error);

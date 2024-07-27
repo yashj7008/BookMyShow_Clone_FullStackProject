@@ -39,11 +39,24 @@ const login = async (req, res) => {
 
     // generate JWT Token
     const jwtToken = await UserData.generateJWTToken();
-    res.cookie('token', jwtToken, {
-      maxAge: 2 * 24 * 60 * 60 * 1000,
-    });
+    // res.cookie('token', jwtToken, {
+    //   secure : false,
+    //   maxAge: 2 * 24 * 60 * 60 * 1000,
+    //   httpOnly : true,
+    //   domain : 'http://localhost:3000'
+    // });
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader('Access-Control-Allow-Origin', "*");
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST');
+   
+    
+    
 
-    res.status(200).send({ status: true, message: "Successfully LoggedIn" });
+    
+    
+  
+    res.status(200).send({ status: true, message: "Successfully LoggedIn" ,
+  token : jwtToken});
   } catch (error) {
     console.log(error);
     res.status(500).send({ status: false, message: "Internal Server Error" });
